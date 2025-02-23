@@ -100,7 +100,8 @@ def option_data_fetching_em(target_date):
     result = pd.merge(option_value_analysis_em_df, option_risk_analysis_em_df, on=['期权代码','期权名称','到期日'], how='left')
     result = pd.merge(option_current_em_df, result, left_on="代码", right_on='期权代码', how='inner')
 
-    return result.drop(columns=['序号','期权代码','期权名称'], inplace=True)
+    result.drop(columns=['序号','期权代码','期权名称'], inplace=True)
+    return result
     # result.to_csv("option_risk_analysis_em.csv", index=False)
 
 if __name__ == '__main__':
