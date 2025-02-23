@@ -68,10 +68,10 @@ def option_data_fetching():
                 merged_df = pd.concat([filtered_daily_df.reset_index(drop=True), transposed_greeks_df.reset_index(drop=True)], axis=1)
                 merged_data_list.append(merged_df)
                 print(f"({sum}/{count}){merged_df.at[0, '交易代码']} 已完成数据整合")
-                sum += 1
                 # print(merged_df)
             else:
-                print(f"Skipping merge for {option_code} due to missing data.")
+                print(f"({sum}/{count})Skipping merge for {option_code} due to missing data.")
+            sum += 1
 
         except Exception as e:
             print(f"❌ Error processing data for {option_code}: {e}")
