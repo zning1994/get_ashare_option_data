@@ -104,7 +104,7 @@ if __name__ == '__main__':
     else:
         print(f"今天 {today} 不是交易日 ❌，程序即将退出。")
         # sys.exit(0)  # 正常退出程序
-    result = option_data_fetching()
+    result = option_data_fetching(target_date)
     if not result.empty:
         # 创建目标目录 data/{today}
         output_dir = os.path.join("data", today)
