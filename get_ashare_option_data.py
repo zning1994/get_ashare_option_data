@@ -30,6 +30,8 @@ def option_data_fetching():
     option_code_list = get_option_code_list()
     merged_data_list = []  # 存储所有合并后的结果
     target_date = "2025-02-21"
+    count = len(option_code_list)
+    sum = 1
 
     for option_code in option_code_list:
         try:
@@ -65,7 +67,8 @@ def option_data_fetching():
             if not filtered_daily_df.empty and not transposed_greeks_df.empty:
                 merged_df = pd.concat([filtered_daily_df.reset_index(drop=True), transposed_greeks_df.reset_index(drop=True)], axis=1)
                 merged_data_list.append(merged_df)
-                print(f"{merged_df.at[0, '交易代码']} 已完成数据整合")
+                print(f"({sum}/{count}){merged_df.at[0, '交易代码']} 已完成数据整合")
+                sum += 1
                 # print(merged_df)
             else:
                 print(f"Skipping merge for {option_code} due to missing data.")
@@ -76,7 +79,7 @@ def option_data_fetching():
     # 合并所有的 DataFrame 为一个最终的 DataFrame
     if merged_data_list:
         final_merged_df = pd.concat(merged_data_list, ignore_index=True)
-        print("\n✅ Final Merged DataFrame:")
+        print("\n✅ Final Merged DataFrame Completed")
         # print(final_merged_df)
         return final_merged_df
     else:
