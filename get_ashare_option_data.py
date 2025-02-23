@@ -1,6 +1,8 @@
 import sys
+import os
 import json
 import time
+from datetime import datetime
 import requests
 import akshare as ak
 import pandas as pd
@@ -26,11 +28,10 @@ def get_option_code_list():
     except Exception as ex:
         print(f"发生错误: {ex}")
 
-def option_data_fetching():
+def option_data_fetching(target_date):
     option_code_list = get_option_code_list()
     merged_data_list = []  # 存储所有合并后的结果
     missing_data_list = []
-    target_date = "2025-02-21"
     count = len(option_code_list)
     sum = 1
 
@@ -89,9 +90,31 @@ def option_data_fetching():
         return pd.DataFrame()
 
 if __name__ == '__main__':
+    target_date = '2025-02-21'
+    # 获取历史交易日数据
+    tool_trade_date_hist_sina_df = ak.tool_trade_date_hist_sina()
+
+    # 获取今天的日期
+    today = datetime.today().strftime("%Y-%m-%d")
+
+    # 判断今天是否是交易日
+    if today in tool_trade_date_hist_sina_df['trade_date'].values:
+        print(f"今天 {today} 是交易日 ✅")
+        target_date = today
+    else:
+        print(f"今天 {today} 不是交易日 ❌，程序即将退出。")
+        # sys.exit(0)  # 正常退出程序
     result = option_data_fetching()
     if not result.empty:
-        result.to_csv('option_data.csv', index=False)
-        print("✅ Data saved to option_data.csv")
+        # 创建目标目录 data/{today}
+        output_dir = os.path.join("data", today)
+        os.makedirs(output_dir, exist_ok=True)
+
+        # 设置输出文件路径
+        output_file = os.path.join(output_dir, "option_data.csv")
+
+        # 保存 CSV 文件
+        result.to_csv(output_file, index=False)
+        print(f"✅ Data saved to {output_file}")
     else:
         print("⚠️ No data to save.")
