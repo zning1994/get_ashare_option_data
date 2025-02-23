@@ -17,7 +17,7 @@ def get_option_code_list():
         # 转换为 pandas DataFrame
         df = pd.DataFrame(data)
 
-        return df['code'].tolist()
+        return df['期权代码'].tolist()
 
     except requests.exceptions.RequestException as e:
         print(f"网络请求错误: {e}")
