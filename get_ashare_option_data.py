@@ -65,7 +65,8 @@ def option_data_fetching():
             if not filtered_daily_df.empty and not transposed_greeks_df.empty:
                 merged_df = pd.concat([filtered_daily_df.reset_index(drop=True), transposed_greeks_df.reset_index(drop=True)], axis=1)
                 merged_data_list.append(merged_df)
-                print(merged_df)
+                print(f"{merged_df.at[0, '交易代码']} 已完成数据整合")
+                # print(merged_df)
             else:
                 print(f"Skipping merge for {option_code} due to missing data.")
 
@@ -76,7 +77,7 @@ def option_data_fetching():
     if merged_data_list:
         final_merged_df = pd.concat(merged_data_list, ignore_index=True)
         print("\n✅ Final Merged DataFrame:")
-        print(final_merged_df)
+        # print(final_merged_df)
         return final_merged_df
     else:
         print("No data merged.")
