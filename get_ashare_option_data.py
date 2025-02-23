@@ -28,6 +28,7 @@ def get_option_code_list():
 
 def option_data_fetching():
     option_code_list = get_option_code_list()
+    merged_data_list = []  # 存储所有合并后的结果
     target_date = "2025-02-21"
 
     for option_code in option_code_list:
