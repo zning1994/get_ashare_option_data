@@ -1,4 +1,4 @@
-name: Run get_ashare_option_data.py every 4 hours
+name: Run get_ashare_option_data.py
 
 on:
   schedule:
