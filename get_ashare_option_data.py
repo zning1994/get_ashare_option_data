@@ -89,6 +89,20 @@ def option_data_fetching(target_date):
         print("No data merged.")
         return pd.DataFrame()
 
+def option_data_fetching_em(target_date):
+    option_current_em_df = ak.option_current_em()
+    option_value_analysis_em_df = ak.option_value_analysis_em()
+    option_risk_analysis_em_df = ak.option_risk_analysis_em()
+
+    option_value_analysis_em_df.drop(columns=['最新价'], inplace=True)
+    option_risk_analysis_em_df.drop(columns=['最新价','涨跌幅'], inplace=True)
+
+    result = pd.merge(option_value_analysis_em_df, option_risk_analysis_em_df, on=['期权代码','期权名称','到期日'], how='left')
+    result = pd.merge(option_current_em_df, result, left_on="代码", right_on='期权代码', how='inner')
+
+    return result.drop(columns=['序号','期权代码','期权名称'], inplace=True)
+    # result.to_csv("option_risk_analysis_em.csv", index=False)
+
 if __name__ == '__main__':
     target_date = '2025-02-21'
     # 获取历史交易日数据
@@ -115,6 +129,21 @@ if __name__ == '__main__':
 
         # 保存 CSV 文件
         result.to_csv(output_file, index=False)
+        print(f"✅ Data saved to {output_file}")
+    else:
+        print("⚠️ No data to save.")
+
+    result_em = option_data_fetching_em(target_date)
+    if not result_em.empty:
+        # 创建目标目录 data/{target_date}
+        output_dir = os.path.join("data", target_date)
+        os.makedirs(output_dir, exist_ok=True)
+
+        # 设置输出文件路径
+        output_file = os.path.join(output_dir, "option_data_em.csv")
+
+        # 保存 CSV 文件
+        result_em.to_csv(output_file, index=False)
         print(f"✅ Data saved to {output_file}")
     else:
         print("⚠️ No data to save.")
