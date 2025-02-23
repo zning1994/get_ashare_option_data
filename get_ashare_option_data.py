@@ -106,8 +106,8 @@ if __name__ == '__main__':
         # sys.exit(0)  # 正常退出程序
     result = option_data_fetching(target_date)
     if not result.empty:
-        # 创建目标目录 data/{today}
-        output_dir = os.path.join("data", today)
+        # 创建目标目录 data/{target_date}
+        output_dir = os.path.join("data", target_date)
         os.makedirs(output_dir, exist_ok=True)
 
         # 设置输出文件路径
