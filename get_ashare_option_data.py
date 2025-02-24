@@ -122,20 +122,6 @@ if __name__ == '__main__':
     else:
         print(f"今天 {today} 不是交易日 ❌，程序即将退出。")
         sys.exit(0)  # 正常退出程序
-    result = option_data_fetching(target_date)
-    if not result.empty:
-        # 创建目标目录 data/{target_date}
-        output_dir = os.path.join("data", target_date)
-        os.makedirs(output_dir, exist_ok=True)
-
-        # 设置输出文件路径
-        output_file = os.path.join(output_dir, "option_data.csv")
-
-        # 保存 CSV 文件
-        result.to_csv(output_file, index=False)
-        print(f"✅ Data saved to {output_file}")
-    else:
-        print("⚠️ No data to save.")
 
     result_em = option_data_fetching_em(target_date)
     if not result_em.empty:
@@ -148,6 +134,21 @@ if __name__ == '__main__':
 
         # 保存 CSV 文件
         result_em.to_csv(output_file, index=False)
+        print(f"✅ Data saved to {output_file}")
+    else:
+        print("⚠️ No data to save.")
+
+    result = option_data_fetching(target_date)
+    if not result.empty:
+        # 创建目标目录 data/{target_date}
+        output_dir = os.path.join("data", target_date)
+        os.makedirs(output_dir, exist_ok=True)
+
+        # 设置输出文件路径
+        output_file = os.path.join(output_dir, "option_data.csv")
+
+        # 保存 CSV 文件
+        result.to_csv(output_file, index=False)
         print(f"✅ Data saved to {output_file}")
     else:
         print("⚠️ No data to save.")
