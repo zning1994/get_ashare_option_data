@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+import argparse
 import json
 import time
 from datetime import datetime
@@ -105,6 +106,11 @@ def option_data_fetching_em(target_date):
     # result.to_csv("option_risk_analysis_em.csv", index=False)
 
 if __name__ == '__main__':
+    # 添加命令行参数解析
+    parser = argparse.ArgumentParser(description="Fetch option data")
+    parser.add_argument('--mode', choices=['em', 'all'], default='all', help="Select mode: 'em' for only em data, 'all' for all data")
+    args = parser.parse_args()
+
     target_date = '2025-02-21'
     # 获取历史交易日数据
     tool_trade_date_hist_sina_df = ak.tool_trade_date_hist_sina()
@@ -123,32 +129,35 @@ if __name__ == '__main__':
         print(f"今天 {today} 不是交易日 ❌，程序即将退出。")
         sys.exit(0)  # 正常退出程序
 
-    result_em = option_data_fetching_em(target_date)
-    if not result_em.empty:
-        # 创建目标目录 data/{target_date}
-        output_dir = os.path.join("data", target_date)
-        os.makedirs(output_dir, exist_ok=True)
+    # 根据模式执行相应的部分
+    if args.mode in ['em', 'all']:
+        result_em = option_data_fetching_em(target_date)
+        if not result_em.empty:
+            # 创建目标目录 data/{target_date}
+            output_dir = os.path.join("data", target_date)
+            os.makedirs(output_dir, exist_ok=True)
 
-        # 设置输出文件路径
-        output_file = os.path.join(output_dir, "option_data_em.csv")
+            # 设置输出文件路径
+            output_file = os.path.join(output_dir, "option_data_em.csv")
 
-        # 保存 CSV 文件
-        result_em.to_csv(output_file, index=False)
-        print(f"✅ Data saved to {output_file}")
-    else:
-        print("⚠️ No data to save.")
+            # 保存 CSV 文件
+            result_em.to_csv(output_file, index=False)
+            print(f"✅ Data saved to {output_file}")
+        else:
+            print("⚠️ No data to save.")
 
-    result = option_data_fetching(target_date)
-    if not result.empty:
-        # 创建目标目录 data/{target_date}
-        output_dir = os.path.join("data", target_date)
-        os.makedirs(output_dir, exist_ok=True)
+    if args.mode in ['s', 'all']:
+        result = option_data_fetching(target_date)
+        if not result.empty:
+            # 创建目标目录 data/{target_date}
+            output_dir = os.path.join("data", target_date)
+            os.makedirs(output_dir, exist_ok=True)
 
-        # 设置输出文件路径
-        output_file = os.path.join(output_dir, "option_data.csv")
+            # 设置输出文件路径
+            output_file = os.path.join(output_dir, "option_data.csv")
 
-        # 保存 CSV 文件
-        result.to_csv(output_file, index=False)
-        print(f"✅ Data saved to {output_file}")
-    else:
-        print("⚠️ No data to save.")
+            # 保存 CSV 文件
+            result.to_csv(output_file, index=False)
+            print(f"✅ Data saved to {output_file}")
+        else:
+            print("⚠️ No data to save.")

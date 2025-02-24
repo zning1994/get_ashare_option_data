@@ -24,7 +24,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run get_ashare_option_data.py
-        run: python get_ashare_option_data.py
+        run: python get_ashare_option_data.py --mode all
 
       - name: Commit files
         run: |
