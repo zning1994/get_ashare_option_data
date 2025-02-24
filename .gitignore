@@ -1,5 +1,6 @@
 .python-version
 1.py
+update_in_aliyun_ecs.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
