@@ -109,6 +109,9 @@ if __name__ == '__main__':
     # 获取历史交易日数据
     tool_trade_date_hist_sina_df = ak.tool_trade_date_hist_sina()
 
+    # 将 trade_date 列转换为字符串类型
+    tool_trade_date_hist_sina_df['trade_date'] = tool_trade_date_hist_sina_df['trade_date'].astype(str)
+
     # 获取今天的日期
     today = datetime.today().strftime("%Y-%m-%d")
 
